@@ -14,6 +14,7 @@
   --accent-blue: #3b82f6;
   --accent-amber: #f59e0b;
   --accent-rose: #f43f5e;
+  --accent-green: #22c55d;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --radius: 1.25rem;
 }
@@ -472,6 +473,10 @@ main h2 {
 }
 .stat-card:nth-child(3) {
   border-top: 4px solid var(--accent-rose);
+  background: linear-gradient(135deg, #fff 80%, rgba(244, 63, 94, 0.03) 100%);
+}
+.stat-card:nth-child(4) {
+  border-top: 4px solid var(--accent-green);
   background: linear-gradient(135deg, #fff 80%, rgba(244, 63, 94, 0.03) 100%);
 }
 
