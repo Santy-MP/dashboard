@@ -13,7 +13,7 @@
   <body class="sidebar-mini">
     <header>
       <div class="header-left">
-        <button id="menu-toggle" aria-label="Abrir menú">
+        <button id="menu-toggle" class="cmenu-toggle" aria-label="Abrir menú">
           <i data-lucide="menu"></i>
         </button>
         <h1>Santy<span>Dashboard</span></h1>
@@ -67,22 +67,29 @@
 
         <section class="dashboard-content-area">
           <!-- Metrics Cards -->
-          <section class="container">
-            <article class="stat-card">
-              <i data-lucide="users-2"></i>
+          <section class="container" id="stats-container">
+            <article class="stat-card" data-id="usuarios">
+              <i data-lucide="users"></i>
               <h3>Usuarios Activos</h3>
-              <p>1,250</p>
-              <span><i data-lucide="trending-up"></i> +5% este mes</span>
+              <p>12,450</p>
+              <span>+12% vs mes anterior</span>
             </article>
 
-            <article class="stat-card">
+            <article class="stat-card" data-id="usuarios2">
+              <i data-lucide="user-x"></i>
+              <h3>Usuarios Inactivos</h3>
+              <p>6,225</p>
+              <span>-12% vs mes anterior</span>
+            </article>
+
+            <article class="stat-card" data-id="meta">
               <i data-lucide="target"></i>
               <h3>Meta Julio</h3>
               <p>$ 4,500,000</p>
               <span style="color: var(--text-muted)">Faltan $7.5M</span>
             </article>
 
-            <article class="stat-card">
+            <article class="stat-card" data-id="perdida">
               <i data-lucide="trending-down"></i>
               <h3>Pérdida Julio</h3>
               <p>$ 250,000</p>
@@ -94,7 +101,7 @@
           <section class="stats-details">
             <h3>Gráfico de Rendimiento</h3>
             <div class="chart">
-              <canvas id="performanceChart"></canvas>
+              <canvas class="performanceChart_5"></canvas>
             </div>
           </section>
         </section>
@@ -119,6 +126,56 @@
                 <option value="Julio">Julio 2026</option>
                 <option value="Junio">Junio 2026</option>
               </select>
+            </div>
+
+            <div class="filter">
+              <label>Vista de Métricas:</label>
+              <select id="cardViewMode">
+                <option value="all">Ver Todas</option>
+                <option value="custom">Personalizar</option>
+              </select>
+            </div>
+
+            <div id="customCardSelector" class="filter" style="display: none">
+              <label>Seleccionar Cajas:</label>
+              <div class="checkbox-list">
+                <label class="card-checkbox-label">
+                  <input
+                    type="checkbox"
+                    class="card-checkbox"
+                    value="usuarios"
+                    checked
+                  />
+                  Usuarios Activos
+                </label>
+                <label class="card-checkbox-label">
+                  <input
+                    type="checkbox"
+                    class="card-checkbox"
+                    value="usuarios2"
+                    checked
+                  />
+                  Usuarios Inactivos
+                </label>
+                <label class="card-checkbox-label">
+                  <input
+                    type="checkbox"
+                    class="card-checkbox"
+                    value="meta"
+                    checked
+                  />
+                  Meta Julio
+                </label>
+                <label class="card-checkbox-label">
+                  <input
+                    type="checkbox"
+                    class="card-checkbox"
+                    value="perdida"
+                    checked
+                  />
+                  Pérdida
+                </label>
+              </div>
             </div>
             <button class="btn-filter">Actualizar Panel</button>
           </div>

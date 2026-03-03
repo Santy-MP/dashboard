@@ -26,15 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Chart initialization ---
-  const ctx = document.getElementById("performanceChart").getContext("2d");
-  const performanceChart = new Chart(ctx, {
+  const ctx = document.getElementByClassName("performanceChart_5").getContext("2d");
+  const performanceChart_5 = new Chart(ctx, {
     type: "line",
     data: {
-      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4"],
+      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7"],
       datasets: [
         {
           label: "Ventas de Julio",
-          data: [1200000, 1900000, 1500000, 4500000],
+          data: [1200000, 1900000, 1500000, 4500000, 2500000, 3200000, 2800000],
           borderColor: "#4f46e5",
           backgroundColor: "rgba(79, 70, 229, 0.1)",
           borderWidth: 3,
@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Filter logic simulation ---
   const filterBtn = document.querySelector(".btn-filter");
   const statusFilter = document.getElementById("statusFilter");
+  const periodFilter = document.getElementById("periodFilter");
 
   filterBtn.addEventListener("click", () => {
     const value = statusFilter.value;
@@ -91,6 +92,81 @@ document.addEventListener("DOMContentLoaded", () => {
       filterBtn.disabled = false;
     }, 600);
   });
+
+  // --- Card Visibility & Persistence Logic ---
+  const cardViewMode = document.getElementById("cardViewMode");
+  const customCardSelector = document.getElementById("customCardSelector");
+  const cardCheckboxes = document.querySelectorAll(".card-checkbox");
+  const statCards = document.querySelectorAll(".stat-card");
+
+  const savePreferences = () => {
+    const preferences = {
+      status: statusFilter.value,
+      period: periodFilter.value,
+      viewMode: cardViewMode.value,
+      visibleCards: Array.from(cardCheckboxes)
+        .filter((cb) => cb.checked)
+        .map((cb) => cb.value),
+    };
+    localStorage.setItem("dashboardPreferences", JSON.stringify(preferences));
+  };
+
+  const loadPreferences = () => {
+    const saved = localStorage.getItem("dashboardPreferences");
+    if (!saved) return;
+
+    const preferences = JSON.parse(saved);
+
+    // Restore Sidebar Filters
+    if (preferences.status) statusFilter.value = preferences.status;
+    if (preferences.period) periodFilter.value = preferences.period;
+
+    // Restore Card Visibility
+    cardViewMode.value = preferences.viewMode;
+    if (preferences.viewMode === "custom") {
+      customCardSelector.style.display = "flex";
+      cardCheckboxes.forEach((cb) => {
+        cb.checked = preferences.visibleCards.includes(cb.value);
+      });
+    }
+    updateCardVisibility();
+  };
+
+  const updateCardVisibility = () => {
+    if (cardViewMode.value === "all") {
+      statCards.forEach((card) => (card.style.display = "flex"));
+      customCardSelector.style.display = "none";
+    } else {
+      customCardSelector.style.display = "flex";
+      cardCheckboxes.forEach((checkbox) => {
+        const cardId = checkbox.value;
+        const targetCard = document.querySelector(
+          `.stat-card[data-id="${cardId}"]`,
+        );
+        if (targetCard) {
+          targetCard.style.display = checkbox.checked ? "flex" : "none";
+        }
+      });
+    }
+  };
+
+  // Event Listeners for Automatic Saving
+  [statusFilter, periodFilter, cardViewMode].forEach((el) => {
+    el.addEventListener("change", () => {
+      updateCardVisibility();
+      savePreferences();
+    });
+  });
+
+  cardCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      updateCardVisibility();
+      savePreferences();
+    });
+  });
+
+  // Initialize from storage
+  loadPreferences();
 
   // Close menu on link click
   const navLinks = document.querySelectorAll("aside a");
