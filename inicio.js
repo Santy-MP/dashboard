@@ -26,14 +26,52 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Chart initialization ---
-  const ctx = document.getElementById("performanceChart_5").getContext("2d");
-  const performanceChart_5 = new Chart(ctx, {
+  const ctx = document.getElementById("performanceChart").getContext("2d");
+  const performanceChart = new Chart(ctx, {
     type: "line",
     data: {
       labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7"],
       datasets: [
         {
           label: "Ventas de Julio",
+          data: [1200000, 1900000, 1500000, 4500000, 2500000, 3200000, 2800000],
+          borderColor: "#4f46e5",
+          backgroundColor: "rgba(79, 70, 229, 0.1)",
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true,
+          pointBackgroundColor: "#4f46e5",
+          pointBorderColor: "#fff",
+          pointHoverRadius: 6,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: "rgba(226, 232, 240, 0.5)" },
+        },
+        x: {
+          grid: { display: false },
+        },
+      },
+    },
+  });
+
+  const ctx2 = document.getElementById("performanceChart-1").getContext("2d");
+  const performanceChart_1 = new Chart(ctx2, {
+    type: "line",
+    data: {
+      labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4", "Semana 5", "Semana 6", "Semana 7"],
+      datasets: [
+        {
+          label: "Ingresos de Diciembre",
           data: [1200000, 1900000, 1500000, 4500000, 2500000, 3200000, 2800000],
           borderColor: "#4f46e5",
           backgroundColor: "rgba(79, 70, 229, 0.1)",
