@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Chart initialization ---
-  const ctx = document.getElementByClassName("performanceChart_5").getContext("2d");
+  const ctx = document.getElementById("performanceChart_5").getContext("2d");
   const performanceChart_5 = new Chart(ctx, {
     type: "line",
     data: {

@@ -5,7 +5,7 @@
   --primary-light: #6366f1;
   --primary-dark: #3730a3;
   --bg: #f8fafc;
-  --sidebar: #0e050c;
+  --sidebar: #0f172a;
   --sidebar-hover: rgba(255, 255, 255, 0.04);
   --text-main: #1e293b;
   --text-muted: #64748b;
@@ -82,7 +82,7 @@ header {
   gap: 1.25rem;
 }
 
-.cmenu-toggle {
+#menu-toggle {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -172,7 +172,7 @@ aside#sidebar-left {
   transition:
     width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 20px 0 25px -5px rgb(44, 25, 37);
+  box-shadow: 20px 0 25px -5px rgba(0, 0, 0, 0.1);
   overflow: hidden; /* Hide text when narrow */
 }
 
