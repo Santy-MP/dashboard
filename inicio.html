@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Santy Analytics Dashboard</title>
+    <link rel="stylesheet" href="inicio.css" />
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body class="sidebar-mini">
+    <header>
+      <div class="header-left">
+        <button id="menu-toggle" aria-label="Abrir menú">
+          <i data-lucide="menu"></i>
+        </button>
+        <h1>Santy<span>Dashboard</span></h1>
+      </div>
+      <div class="user-info">
+        <i data-lucide="bell"></i>
+        <i data-lucide="user"></i>
+      </div>
+    </header>
+    <div id="overlay"></div>
+    <div class="main-layout">
+      <aside id="sidebar-left">
+        <nav>
+          <ul>
+            <li>
+              <a href="#"
+                ><i data-lucide="layout-dashboard"></i> <span>Inicio</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i data-lucide="shopping-bag"></i> <span>Productos</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i data-lucide="shopping-cart"></i> <span>Pedidos</span></a
+              >
+            </li>
+            <li>
+              <a href="#"><i data-lucide="users"></i> <span>Clientes</span></a>
+            </li>
+            <li>
+              <a href="#"
+                ><i data-lucide="bar-chart-3"></i> <span>Reportes</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i data-lucide="settings"></i> <span>Ajustes</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main>
+        <div class="main-header">
+          <h2>Resumen General</h2>
+        </div>
+
+        <section class="dashboard-content-area">
+          <!-- Metrics Cards -->
+          <section class="container">
+            <article class="stat-card">
+              <i data-lucide="users-2"></i>
+              <h3>Usuarios Activos</h3>
+              <p>1,250</p>
+              <span><i data-lucide="trending-up"></i> +5% este mes</span>
+            </article>
+
+            <article class="stat-card">
+              <i data-lucide="target"></i>
+              <h3>Meta Julio</h3>
+              <p>$ 4,500,000</p>
+              <span style="color: var(--text-muted)">Faltan $7.5M</span>
+            </article>
+
+            <article class="stat-card">
+              <i data-lucide="trending-down"></i>
+              <h3>Pérdida Julio</h3>
+              <p>$ 250,000</p>
+              <span><i data-lucide="alert-circle"></i> Riesgo detectado</span>
+            </article>
+          </section>
+
+          <!-- Chart Section -->
+          <section class="stats-details">
+            <h3>Gráfico de Rendimiento</h3>
+            <div class="chart">
+              <canvas id="performanceChart"></canvas>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <!-- Full-Height Right Sidebar -->
+      <aside class="filters-sidebar">
+        <div class="filters-sticky-wrapper">
+          <div class="filters-group">
+            <h3>Filtros de Análisis</h3>
+            <div class="filter">
+              <label>Estado:</label>
+              <select id="statusFilter">
+                <option value="Todos">Todos</option>
+                <option value="Activos">Activos</option>
+                <option value="Inactivos">Inactivos</option>
+              </select>
+            </div>
+            <div class="filter">
+              <label>Periodo:</label>
+              <select id="periodFilter">
+                <option value="Julio">Julio 2026</option>
+                <option value="Junio">Junio 2026</option>
+              </select>
+            </div>
+            <button class="btn-filter">Actualizar Panel</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <footer>
+      <p>&copy; 2026 Santy Analytics - Dashboard Premium</p>
+    </footer>
+
+    <script src="inicio.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
