@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Santy Analytics Dashboard</title>
-    <link rel="stylesheet" href="inicio.css" />
+    <link rel="stylesheet" href="css/inicio.css" />
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Chart.js -->
@@ -13,7 +13,7 @@
   <body class="sidebar-mini">
     <header>
       <div class="header-left">
-        <button id="menu-toggle" class="cmenu-toggle" aria-label="Abrir menú">
+        <button id="menu-toggle" aria-label="Abrir menú">
           <i data-lucide="menu"></i>
         </button>
         <h1>Santy<span>Dashboard</span></h1>
@@ -29,7 +29,7 @@
         <nav>
           <ul>
             <li>
-              <a href="#"
+              <a href="inicio.html"
                 ><i data-lucide="layout-dashboard"></i> <span>Inicio</span></a
               >
             </li>
@@ -47,7 +47,7 @@
               <a href="#"><i data-lucide="users"></i> <span>Clientes</span></a>
             </li>
             <li>
-              <a href="#"
+              <a href="reportes.html"
                 ><i data-lucide="bar-chart-3"></i> <span>Reportes</span></a
               >
             </li>
@@ -62,54 +62,95 @@
 
       <main>
         <div class="main-header">
-          <h2>Resumen General</h2>
+          <div class="header-text">
+            <h2>Resumen General</h2>
+            <p>Monitorea tus KPIs y tendencias en tiempo real</p>
+          </div>
         </div>
 
         <section class="dashboard-content-area">
-          <!-- Metrics Cards -->
-          <section class="container" id="stats-container">
-            <article class="stat-card" data-id="usuarios">
-              <i data-lucide="users"></i>
-              <h3>Usuarios Activos</h3>
-              <p>12,450</p>
-              <span>+12% vs mes anterior</span>
-            </article>
-
-            <article class="stat-card" data-id="usuarios2">
-              <i data-lucide="user-x"></i>
-              <h3>Usuarios Inactivos</h3>
-              <p>6,225</p>
-              <span>-12% vs mes anterior</span>
-            </article>
-
-            <article class="stat-card" data-id="meta">
-              <i data-lucide="target"></i>
-              <h3>Meta Julio</h3>
-              <p>$ 4,500,000</p>
-              <span style="color: var(--text-muted)">Faltan $7.5M</span>
-            </article>
-
-            <article class="stat-card" data-id="perdida">
-              <i data-lucide="trending-down"></i>
-              <h3>Pérdida Julio</h3>
-              <p>$ 250,000</p>
-              <span><i data-lucide="alert-circle"></i> Riesgo detectado</span>
-            </article>
-          </section>
-
-          <!-- Chart Section -->
-          <section class="stats-details">
-            <h3>Gráfico de Rendimiento</h3>
-            <div class="chart">
-              <canvas id="performanceChart"></canvas>
+          <!-- Section: Metrics -->
+          <div class="section-container">
+            <div class="section-header">
+              <h3><i data-lucide="pie-chart"></i> Métricas Clave</h3>
             </div>
+            <section class="container" id="stats-container">
+              <article class="stat-card" data-id="usuarios">
+                <div class="card-icon"><i data-lucide="users"></i></div>
+                <div class="card-content">
+                  <h3>Coincidencia Edad</h3>
+                  <span>0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="usuarios2">
+                <div class="card-icon"><i data-lucide="activity"></i></div>
+                <div class="card-content">
+                  <h3>Promedio Edad</h3>
+                  <span>0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta">
+                <div class="card-icon"><i data-lucide="user-check"></i></div>
+                <div class="card-content">
+                  <h3>Filtro Nombre</h3>
+                  <span>0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta1">
+                <div class="card-icon"><i data-lucide="percent"></i></div>
+                <div class="card-content">
+                  <h3>Porcentaje Exito</h3>
+                  <span>0%</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta2">
+                <div class="card-icon"><i data-lucide="wallet"></i></div>
+                <div class="card-content">
+                  <h3>Salarios Top</h3>
+                  <span>0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta3">
+                <div class="card-icon"><i data-lucide="trending-up"></i></div>
+                <div class="card-content">
+                  <h3>Promedio Salarial</h3>
+                  <span>$ 0</span>
+                </div>
+              </article>
+            </section>
+          </div>
 
-            <h3>Gráfico de Ingresos</h3>
-            <div class="chart">
-              <canvas id="performanceChart-1"></canvas>
+          <!-- Section: Table -->
+          <div class="section-container">
+            <div class="section-header">
+              <h3><i data-lucide="table"></i> Detalle de Registros</h3>
             </div>
-
-          </section>
+            <div class="table-section">
+              <div class="table-card">
+                <table id="main-data-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Edad</th>
+                      <th>Salario</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+                <div class="pagination-container">
+                  <button id="prevBtn">
+                    <i data-lucide="chevron-left"></i> Anterior
+                  </button>
+                  <span id="infoPagina"></span>
+                  <button id="nextBtn">
+                    Siguiente <i data-lucide="chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
 
@@ -117,23 +158,18 @@
       <aside class="filters-sidebar">
         <div class="filters-sticky-wrapper">
           <div class="filters-group">
-            <h3>Filtros de Análisis</h3>
-            <div class="filter">
-              <label>Estado:</label>
-              <select id="statusFilter">
-                <option value="Todos">Todos</option>
-                <option value="Activos">Activos</option>
-                <option value="Inactivos">Inactivos</option>
-              </select>
+            <div class="header-actions">
+              <label>Buscar Registros:</label>
+              <div class="search-container global-search">
+                <i data-lucide="search"></i>
+                <input
+                  type="text"
+                  id="buscar"
+                  placeholder="Buscar registros..."
+                />
+                <ul id="listaResultados" class="search-results-floating"></ul>
+              </div>
             </div>
-            <div class="filter">
-              <label>Periodo:</label>
-              <select id="periodFilter">
-                <option value="Julio">Julio 2026</option>
-                <option value="Junio">Junio 2026</option>
-              </select>
-            </div>
-
             <div class="filter">
               <label>Vista de Métricas:</label>
               <select id="cardViewMode">
@@ -152,7 +188,7 @@
                     value="usuarios"
                     checked
                   />
-                  Usuarios Activos
+                  Cantidad de personas con la misma edad
                 </label>
                 <label class="card-checkbox-label">
                   <input
@@ -161,7 +197,7 @@
                     value="usuarios2"
                     checked
                   />
-                  Usuarios Inactivos
+                  Promedio de edad
                 </label>
                 <label class="card-checkbox-label">
                   <input
@@ -170,20 +206,37 @@
                     value="meta"
                     checked
                   />
-                  Meta Julio
+                  Personas con la misma edad
                 </label>
                 <label class="card-checkbox-label">
                   <input
                     type="checkbox"
                     class="card-checkbox"
-                    value="perdida"
+                    value="meta1"
                     checked
                   />
-                  Pérdida
+                  Porcentaje en la lista
+                </label>
+                <label class="card-checkbox-label">
+                  <input
+                    type="checkbox"
+                    class="card-checkbox"
+                    value="meta2"
+                    checked
+                  />
+                  Personas con el mismo salario
+                </label>
+                <label class="card-checkbox-label">
+                  <input
+                    type="checkbox"
+                    class="card-checkbox"
+                    value="meta3"
+                    checked
+                  />
+                  Promedio de salario
                 </label>
               </div>
             </div>
-            <button class="btn-filter">Actualizar Panel</button>
           </div>
         </div>
       </aside>
@@ -192,7 +245,7 @@
       <p>&copy; 2026 Santy Analytics - Dashboard Premium</p>
     </footer>
 
-    <script src="inicio.js"></script>
+    <script src="js/inicio.js"></script>
     <script>
       // Initialize Lucide icons
       lucide.createIcons();
