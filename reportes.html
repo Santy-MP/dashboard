@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -44,11 +44,13 @@
               >
             </li>
             <li>
-              <a href="#"><i data-lucide="users"></i> <span>Clientes</span></a>
+              <a href="Clientes.html">
+                <i data-lucide="users"></i> <span>Clientes</span></a
+              >
             </li>
             <li>
-              <a href="#"
-                ><i data-lucide="bar-chart-3"></i> <span>Reportes</span></a
+              <a href="reportes.html">
+                <i data-lucide="bar-chart-3"></i> <span>Reportes</span></a
               >
             </li>
             <li>
@@ -62,36 +64,38 @@
 
       <main>
         <div class="main-header">
-          <h2>Resumen General</h2>
+          <div class="header-text">
+            <h2>Reportes</h2>
+            <p>Monitorea tus KPIs y tendencias en tiempo real</p>
+          </div>
         </div>
 
         <!-- Section: Charts -->
-          <div class="section-container">
-            <div class="section-header">
-              <h3><i data-lucide="bar-chart-2"></i> Análisis de Rendimiento</h3>
-            </div>
-            <section class="charts-grid">
-              <div class="chart-card">
-                <div class="chart-header">
-                  <h4>Proyección de Ventas</h4>
-                  <span class="badge badge-indigo">Mensual</span>
-                </div>
-                <div class="chart-container">
-                  <canvas id="performanceChart"></canvas>
-                </div>
-              </div>
-              <div class="chart-card">
-                <div class="chart-header">
-                  <h4>Reporte de Ingresos</h4>
-                  <span class="badge badge-rose">Semanal</span>
-                </div>
-                <div class="chart-container">
-                  <canvas id="performanceChart_1"></canvas>
-                </div>
-              </div>
-            </section>
+        <div class="section-container">
+          <div class="section-header">
+            <h3><i data-lucide="bar-chart-2"></i> Análisis de Rendimiento</h3>
           </div>
-
+          <section class="charts-grid">
+            <div class="chart-card">
+              <div class="chart-header">
+                <h4>Proyección de Ventas</h4>
+                <span class="badge badge-indigo">Mensual</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
+              </div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-header">
+                <h4>Reporte de Ingresos</h4>
+                <span class="badge badge-rose">Semanal</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="performanceChart_1"></canvas>
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
 
       <!-- Full-Height Right Sidebar -->

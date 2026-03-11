@@ -60,9 +60,16 @@ const matriz = [
   [58, "Joseph", "Cadena", 25, 58000000],
   [59, "Ana", "Diaz", 28, 59000000],
   [60, "Sebastio", "Morales", 19, 60000000],
+  [62, "Ana", "Diaz", 28, 62000000],
+  [63, "Sebastio", "Morales", 19, 63000000],
+  [64, "Joseph", "Cadena", 25, 64000000],
+  [65, "Ana", "Diaz", 28, 65000000],
+  [66, "Sebastio", "Morales", 19, 66000000],
 ];
 
 let performanceChart, performanceChart_1;
+let paginaActual = 1;
+const filasPorPagina = 10;
 
 /**
  * Main Initialization
@@ -73,7 +80,21 @@ document.addEventListener("DOMContentLoaded", () => {
   initTableAndSearch();
   initFilters();
   initMetrics();
+  initFormLogic();
 });
+
+// --- Utility Functions ---
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 
 // --- 1. Sidebar Module ---
 function initSidebar() {
@@ -104,20 +125,16 @@ function initSidebar() {
 }
 
 // --- 2. Table & Search Module ---
-let paginaActual = 1;
-const filasPorPagina = 10;
-
 function initTableAndSearch() {
   const tbody = document.querySelector("#main-data-table tbody");
   const buscador = document.getElementById("buscar");
   const listaResultados = document.getElementById("listaResultados");
   const infoPagina = document.getElementById("infoPagina");
 
-  if (!tbody || !buscador || !listaResultados) return;
+  if (!tbody || !buscador) return;
 
   const renderTable = (tableData) => {
     tbody.innerHTML = "";
-
     const inicio = (paginaActual - 1) * filasPorPagina;
     const fin = inicio + filasPorPagina;
     const datosPaginados = tableData.slice(inicio, fin);
@@ -137,7 +154,6 @@ function initTableAndSearch() {
       infoPagina.textContent = `Página ${paginaActual} de ${totalPaginas || 1}`;
     }
 
-    // Actualizar estado de botones
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     if (prevBtn) prevBtn.disabled = paginaActual === 1;
@@ -145,17 +161,17 @@ function initTableAndSearch() {
       nextBtn.disabled = paginaActual >= totalPaginas || tableData.length === 0;
   };
 
-  // --- Lógica de Búsqueda ---
-  const handleSearch = (termino) => {
+  const handleSearch = debounce((termino) => {
     const query = termino.toLowerCase().trim();
-
-    // Al buscar, siempre reseteamos a la página 1
     paginaActual = 1;
 
     if (query === "") {
-      listaResultados.classList.remove("active");
-      listaResultados.innerHTML = "";
+      if (listaResultados) {
+        listaResultados.classList.remove("active");
+        listaResultados.innerHTML = "";
+      }
       renderTable(matriz);
+      updateStatusMetrics(matriz);
       return;
     }
 
@@ -165,27 +181,29 @@ function initTableAndSearch() {
         f[2].toLowerCase().includes(query),
     );
     renderTable(filtered);
+    updateStatusMetrics(filtered);
 
-    // ... (El resto de tu lógica de lista de resultados se mantiene igual)
-    listaResultados.innerHTML = "";
-    if (filtered.length > 0) {
-      listaResultados.classList.add("active");
-      filtered.slice(0, 5).forEach((match) => {
-        const li = document.createElement("li");
-        li.textContent = `${match[1]} ${match[2]}`;
-        li.addEventListener("click", () => {
-          buscador.value = `${match[1]} ${match[2]}`;
-          listaResultados.classList.remove("active");
-          renderTable([match]);
+    if (listaResultados) {
+      listaResultados.innerHTML = "";
+      if (filtered.length > 0) {
+        listaResultados.classList.add("active");
+        filtered.slice(0, 5).forEach((match) => {
+          const li = document.createElement("li");
+          li.textContent = `${match[1]} ${match[2]}`;
+          li.addEventListener("click", () => {
+            buscador.value = `${match[1]} ${match[2]}`;
+            listaResultados.classList.remove("active");
+            renderTable([match]);
+            updateStatusMetrics([match]);
+          });
+          listaResultados.appendChild(li);
         });
-        listaResultados.appendChild(li);
-      });
-    } else {
-      listaResultados.classList.remove("active");
+      } else {
+        listaResultados.classList.remove("active");
+      }
     }
-  };
+  }, 300);
 
-  // --- Eventos de los Botones de Paginación ---
   document.getElementById("nextBtn")?.addEventListener("click", () => {
     const totalPaginas = Math.ceil(matriz.length / filasPorPagina);
     if (paginaActual < totalPaginas) {
@@ -201,9 +219,9 @@ function initTableAndSearch() {
     }
   });
 
-  // Inicialización
   buscador.addEventListener("input", (e) => handleSearch(e.target.value));
-  renderTable(matriz); // Carga inicial
+  renderTable(matriz);
+  updateStatusMetrics(matriz);
 }
 
 // --- 3. Charts Module ---
@@ -211,86 +229,135 @@ function initCharts() {
   const canvas1 = document.getElementById("performanceChart");
   const canvas2 = document.getElementById("performanceChart_1");
 
+  const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        top: 20,
+        bottom: 20,
+      },
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: "rgba(15, 23, 42, 0.95)",
+        padding: 16,
+        caretSize: 8,
+        cornerRadius: 16,
+        titleFont: { size: 14, weight: "800", family: "'Inter', sans-serif" },
+        bodyFont: { size: 14, family: "'Inter', sans-serif" },
+        boxWidth: 8,
+        boxHeight: 8,
+        boxPadding: 8,
+        usePointStyle: true,
+        borderColor: "rgba(255, 255, 255, 0.1)",
+        borderWidth: 1,
+      },
+    },
+    interaction: {
+      intersect: false,
+      mode: "index",
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(226, 232, 240, 0.6)",
+          drawBorder: false,
+          borderDash: [5, 5],
+        },
+        ticks: {
+          color: "#94a3b8",
+          padding: 10,
+          font: { size: 12, weight: "600" },
+          callback: function (value) {
+            return "$" + value.toLocaleString();
+          },
+        },
+      },
+      x: {
+        grid: { display: false },
+        ticks: {
+          color: "#94a3b8",
+          padding: 10,
+          font: { size: 12, weight: "600" },
+        },
+      },
+    },
+    animation: false,
+    animations: {
+      tension: false,
+    },
+  };
+
   if (canvas1) {
     const ctx = canvas1.getContext("2d");
+    const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+    gradient.addColorStop(0, "rgba(99, 102, 241, 0.35)");
+    gradient.addColorStop(0.5, "rgba(99, 102, 241, 0.1)");
+    gradient.addColorStop(1, "rgba(99, 102, 241, 0)");
+
     performanceChart = new Chart(ctx, {
-      type: "bar",
+      type: "line",
       data: {
-        labels: [
-          "Semana 1",
-          "Semana 2",
-          "Semana 3",
-          "Semana 4",
-          "Semana 5",
-          "Semana 6",
-          "Semana 7",
-        ],
+        labels: ["Sem 1", "Sem 2", "Sem 3", "Sem 4", "Sem 5", "Sem 6", "Sem 7"],
         datasets: [
           {
-            label: "Ventas de Julio",
-            data: [
-              1200000, 1900000, 1500000, 4500000, 2500000, 3200000, 2800000,
-            ],
-            borderColor: "#4f46e5",
-            backgroundColor: "rgba(79, 70, 229, 0.1)",
-            borderWidth: 3,
+            label: "Ventas",
+            data: [1200, 1900, 1500, 4500, 2500, 3200, 2800],
+            borderColor: "#6366f1",
+            backgroundColor: gradient,
+            borderWidth: 4,
             fill: true,
-            pointBackgroundColor: "#4f46e5",
-            pointBorderColor: "#fff",
-            pointHoverRadius: 6,
+            tension: 0.45,
+            pointBackgroundColor: "#fff",
+            pointBorderColor: "#6366f1",
+            pointBorderWidth: 3,
+            pointRadius: 5,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: "#6366f1",
+            pointHoverBorderColor: "#fff",
+            pointHoverBorderWidth: 3,
           },
         ],
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true, grid: { color: "rgba(226, 232, 240, 0.5)" } },
-          x: { grid: { display: false } },
-        },
-      },
+      options: commonOptions,
     });
   }
 
   if (canvas2) {
     const ctx2 = canvas2.getContext("2d");
+    const gradient2 = ctx2.createLinearGradient(0, 0, 0, 350);
+    gradient2.addColorStop(0, "rgba(244, 63, 94, 0.35)");
+    gradient2.addColorStop(0.5, "rgba(244, 63, 94, 0.1)");
+    gradient2.addColorStop(1, "rgba(244, 63, 94, 0)");
+
     performanceChart_1 = new Chart(ctx2, {
       type: "line",
       data: {
-        labels: [
-          "Lunes",
-          "Martes",
-          "Miercoles",
-          "Jueves",
-          "Viernes",
-          "Sabado",
-          "Domingo",
-        ],
+        labels: ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"],
         datasets: [
           {
-            label: "Ingresos de Junio",
-            data: [500000, 800000, 600000, 1000000, 1500000, 2000000, 2500000],
+            label: "Ingresos",
+            data: [5000, 8000, 6000, 10000, 15000, 20000, 25000],
             borderColor: "#f43f5e",
-            backgroundColor: "rgba(244, 63, 94, 0.1)",
-            borderWidth: 3,
-            tension: 0.4,
+            backgroundColor: gradient2,
+            borderWidth: 4,
+            tension: 0.45,
             fill: true,
-            pointBackgroundColor: "#f43f5e",
-            pointBorderColor: "#fff",
-            pointHoverRadius: 6,
+            pointBackgroundColor: "#fff",
+            pointBorderColor: "#f43f5e",
+            pointBorderWidth: 3,
+            pointRadius: 5,
+            pointHoverRadius: 8,
+            pointHoverBackgroundColor: "#f43f5e",
+            pointHoverBorderColor: "#fff",
+            pointHoverBorderWidth: 3,
           },
         ],
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true, grid: { color: "rgba(226, 232, 240, 0.5)" } },
-          x: { grid: { display: false } },
-        },
-      },
+      options: commonOptions,
     });
   }
 }
@@ -304,76 +371,55 @@ function initFilters() {
 
   const updateCardVisibility = () => {
     const isCustom = cardViewMode && cardViewMode.value === "custom";
+    if (customSelector)
+      customSelector.style.display = isCustom ? "block" : "none";
 
-    if (isCustom) {
-      if (customSelector) customSelector.style.display = "block";
-      checkboxes.forEach((cb) => {
-        const cardId = cb.value;
-        const card = document.querySelector(`.stat-card[data-id="${cardId}"]`);
-        if (card) {
-          card.classList.toggle("hidden-card", !cb.checked);
-        }
-      });
-    } else {
-      if (customSelector) customSelector.style.display = "none";
-      document
-        .querySelectorAll(".stat-card")
-        .forEach((c) => c.classList.remove("hidden-card"));
-    }
+    document.querySelectorAll(".stat-card").forEach((card) => {
+      const cardId = card.getAttribute("data-id");
+      if (isCustom) {
+        const checkbox = Array.from(checkboxes).find(
+          (cb) => cb.value === cardId,
+        );
+        card.classList.toggle(
+          "hidden-card",
+          checkbox ? !checkbox.checked : false,
+        );
+      } else {
+        card.classList.remove("hidden-card");
+      }
+    });
   };
 
-  // Listeners para cambio de modo (Todas vs Personalizar)
-  if (cardViewMode) {
-    cardViewMode.addEventListener("change", updateCardVisibility);
-  }
+  cardViewMode?.addEventListener("change", updateCardVisibility);
+  checkboxes.forEach((cb) =>
+    cb.addEventListener("change", updateCardVisibility),
+  );
 
-  // Listeners para cada checkbox individual
-  checkboxes.forEach((cb) => {
-    cb.addEventListener("change", updateCardVisibility);
-  });
-
-  // Listener para el botón (efecto visual de recarga de gráficas)
-  if (filterBtn) {
+  if (filterBtn && filterBtn.id !== "btn-crear-cliente") {
     filterBtn.addEventListener("click", () => {
       const originalText = filterBtn.innerText;
       filterBtn.innerText = "Cargando...";
       filterBtn.disabled = true;
 
-      // Actualizar visibilidad por si acaso
-      updateCardVisibility();
-
       setTimeout(() => {
-        const altData1 = [
-          2500000, 3200000, 2800000, 5000000, 1500000, 4200000, 3800000,
-        ];
-        const altData2 = [
-          1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000,
-        ];
-
         if (performanceChart) {
-          performanceChart.data.datasets[0].data = altData1;
+          performanceChart.data.datasets[0].data = [
+            250000, 320000, 280000, 500000, 150000, 420000, 980000,
+          ];
           performanceChart.update();
         }
-        if (performanceChart_1) {
-          performanceChart_1.data.datasets[0].data = altData2;
-          performanceChart_1.update();
-        }
-
         filterBtn.innerText = originalText;
         filterBtn.disabled = false;
       }, 600);
     });
   }
-
-  // Ejecución inicial para sincronizar estado
-  updateCardVisibility();
 }
 
 // --- 5. Metrics Module ---
 function initMetrics() {
   const updateCard = (id, value) => {
-    const card = document.querySelector(`.stat-card[data-id="${id}"] span`);
-    if (card) card.textContent = value;
+    const span = document.querySelector(`.stat-card[data-id="${id}"] span`);
+    if (span) span.textContent = value;
   };
 
   const sumaEdad = matriz.reduce((acc, f) => acc + f[3], 0);
@@ -390,10 +436,119 @@ function initMetrics() {
     matriz.length > 0 ? (sumaSalarios / matriz.length).toLocaleString() : 0;
   const mismos60k = matriz.filter((f) => f[4] === 60000).length;
 
-  updateCard("usuarios", mismos28);
-  updateCard("usuarios2", promedioEdad);
-  updateCard("meta", santiagoCount);
-  updateCard("meta1", `${porcentajeSantiago}%`);
-  updateCard("meta2", mismos60k);
-  updateCard("meta3", `$ ${promedioSalarios}`);
+  updateCard("meta1", mismos28);
+  updateCard("meta2", promedioEdad);
+  updateCard("meta3", santiagoCount);
+  updateCard("meta4", `${porcentajeSantiago}%`);
+  updateCard("meta5", mismos60k);
+  updateCard("meta6", `$ ${promedioSalarios}`);
+}
+
+// --- 6. Form & Status Metrics Module ---
+function updateStatusMetrics(data) {
+  const resultadoValor = document.getElementById("resultado-valor");
+  const alertaRepetidos = document.getElementById("alerta-repetidos");
+  const meta7Span = document.querySelector('.stat-card[data-id="meta7"] span');
+  const meta8Span = document.querySelector('.stat-card[data-id="meta8"] span');
+
+  const total = data.length;
+  const setUnicos = new Set(data.map((item) => JSON.stringify(item)));
+  const tieneRepetidos = setUnicos.size !== total;
+
+  if (resultadoValor) resultadoValor.textContent = total;
+  if (meta7Span) meta7Span.textContent = total;
+
+  if (meta8Span) {
+    meta8Span.textContent = tieneRepetidos ? "Detectados" : "Ninguno";
+    const card8 = document.querySelector('.stat-card[data-id="meta8"]');
+    if (card8)
+      card8.style.borderColor = tieneRepetidos
+        ? "var(--accent-rose)"
+        : "var(--glass-border)";
+  }
+
+  if (alertaRepetidos)
+    alertaRepetidos.style.display = tieneRepetidos ? "block" : "none";
+}
+
+// --- 7. Form Logic ---
+let lista = [];
+function initFormLogic() {
+  const btnAbrir = document.getElementById("btn-crear-cliente");
+  const modal = document.getElementById("modalRegistro");
+  const btnCancelar = document.getElementById("btnCancelar");
+  const btnCerrarX = document.getElementById("btnCerrarX");
+  const registroForm = document.getElementById("registroForm");
+
+  if (!btnAbrir || !modal) return;
+
+  const toggleForm = () => {
+    modal.classList.toggle("form-visible");
+    modal.classList.toggle("form-hidden");
+
+    if (modal.classList.contains("form-visible")) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  };
+
+  btnAbrir.addEventListener("click", toggleForm);
+  btnCancelar?.addEventListener("click", toggleForm);
+  btnCerrarX?.addEventListener("click", toggleForm);
+
+  // Cerrar al hacer click en el overlay
+  modal.querySelector(".modal-overlay")?.addEventListener("click", toggleForm);
+
+  registroForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const nombreCompleto = document.getElementById("nombre").value.split(" ");
+    const nombre = nombreCompleto[0] || "Sin Nombre";
+    const apellido = nombreCompleto.slice(1).join(" ") || "Sin Apellido";
+    const edad = parseInt(document.getElementById("edad").value) || 0;
+    const nuevoId = matriz.length + 1;
+
+    // Guardar en arrays
+    const nuevoRegistro = [nuevoId, nombre, apellido, edad, 0]; // Salario por defecto 0
+    matriz.push(nuevoRegistro);
+    lista.push({ id: nuevoId, nombre, apellido, edad });
+
+    console.log("Nuevo cliente guardado:", nuevoRegistro);
+
+    // Actualizar UI
+    const saveBtn = registroForm.querySelector(".btn-save");
+    const originalContent = saveBtn.innerHTML;
+    saveBtn.innerHTML = '<i data-lucide="check"></i> Guardado';
+    lucide.createIcons();
+
+    // Refrescar componentes globales
+    if (typeof renderTable === "function") {
+      const buscador = document.getElementById("buscar");
+      const currentQuery = buscador ? buscador.value : "";
+      if (currentQuery) {
+        // Si hay búsqueda activa, volver a filtrar
+        const filtered = matriz.filter(
+          (f) =>
+            f[1].toLowerCase().includes(currentQuery.toLowerCase()) ||
+            f[2].toLowerCase().includes(currentQuery.toLowerCase()),
+        );
+        renderTable(filtered);
+        updateStatusMetrics(filtered);
+      } else {
+        renderTable(matriz);
+        updateStatusMetrics(matriz);
+      }
+    }
+    initMetrics();
+    // Actualizar gráficas si existen
+    if (performanceChart) performanceChart.update();
+    if (performanceChart_1) performanceChart_1.update();
+
+    setTimeout(() => {
+      toggleForm();
+      registroForm.reset();
+      saveBtn.innerHTML = originalContent;
+      lucide.createIcons();
+    }, 600);
+  });
 }

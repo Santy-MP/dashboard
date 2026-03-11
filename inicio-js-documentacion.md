@@ -7,7 +7,7 @@ Este documento explica de forma detallada cada línea y parte del código JavaSc
 ## 1. Evento de Carga Inicial
 
 ```javascript
-1: document.addEventListener("DOMContentLoaded", () => {
+1: document.addEventListener("DOMContentLoaded", () => {});
 ```
 
 - **Línea 1**: Espera a que todo el contenido HTML haya sido cargado y procesado por el navegador antes de ejecutar el código. Esto asegura que los elementos (como botones o gráficos) ya existan cuando intentemos manipularlos.
@@ -149,7 +149,7 @@ _(Se repite una lógica similar para `performanceChart_1` en las líneas 75-119)
 ## 7. Control de Visibilidad de Tarjetas
 
 ```javascript
-217:   const updateCardVisibility = () => {
+217:   const updateCardVisibility = () => {}
 218:     if (cardViewMode.value === "all") {
 219:       statCards.forEach((card) => (card.style.display = "flex"));
 220:       customCardSelector.style.display = "none";

@@ -65,10 +65,11 @@
       <main>
         <div class="main-header">
           <div class="header-text">
-            <h2>Inicio</h2>
+            <h2>Clientes</h2>
             <p>Monitorea tus KPIs y tendencias en tiempo real</p>
           </div>
         </div>
+
         <section class="dashboard-content-area">
           <!-- Section: Metrics -->
           <div class="section-container">
@@ -76,46 +77,23 @@
               <h3><i data-lucide="pie-chart"></i> Métricas Clave</h3>
             </div>
             <section class="container" id="stats-container">
-              <article class="stat-card" data-id="meta1">
-                <div class="card-icon"><i data-lucide="users"></i></div>
+              <article class="stat-card" data-id="meta7">
+                <div class="card-icon"><i data-lucide="search"></i></div>
                 <div class="card-content">
-                  <h3>Coincidencia Edad</h3>
-                  <span>0</span>
+                  <h3>Resultados</h3>
+                  <span id="resultado-valor">0</span>
                 </div>
               </article>
-              <article class="stat-card" data-id="meta2">
-                <div class="card-icon"><i data-lucide="activity"></i></div>
+              <article class="stat-card" data-id="meta8">
+                <div class="card-icon"><i data-lucide="copy"></i></div>
                 <div class="card-content">
-                  <h3>Promedio Edad</h3>
-                  <span>0</span>
-                </div>
-              </article>
-              <article class="stat-card" data-id="meta3">
-                <div class="card-icon"><i data-lucide="user-check"></i></div>
-                <div class="card-content">
-                  <h3>Filtro Nombre</h3>
-                  <span>0</span>
-                </div>
-              </article>
-              <article class="stat-card" data-id="meta4">
-                <div class="card-icon"><i data-lucide="percent"></i></div>
-                <div class="card-content">
-                  <h3>Porcentaje Exito</h3>
-                  <span>0%</span>
-                </div>
-              </article>
-              <article class="stat-card" data-id="meta5">
-                <div class="card-icon"><i data-lucide="wallet"></i></div>
-                <div class="card-content">
-                  <h3>Salarios Top</h3>
-                  <span>0</span>
-                </div>
-              </article>
-              <article class="stat-card" data-id="meta6">
-                <div class="card-icon"><i data-lucide="trending-up"></i></div>
-                <div class="card-content">
-                  <h3>Promedio Salarial</h3>
-                  <span>$ 0</span>
+                  <h3>¿Hay Repetidos?</h3>
+                  <span>No</span>
+                  <small
+                    id="alerta-repetidos"
+                    style="color: var(--accent-rose); display: none"
+                    >⚠️ Duplicados</small
+                  >
                 </div>
               </article>
             </section>
@@ -171,6 +149,11 @@
                 <ul id="listaResultados" class="search-results-floating"></ul>
               </div>
             </div>
+            <div class="header-actions">
+              <button id="btn-crear-cliente" class="btn-filter">
+                <i data-lucide="user-plus"></i> Crear Cliente
+              </button>
+            </div>
             <div class="filter">
               <label>Vista de Métricas:</label>
               <select id="cardViewMode">
@@ -186,55 +169,19 @@
                   <input
                     type="checkbox"
                     class="card-checkbox"
-                    value="meta1"
+                    value="meta7"
                     checked
                   />
-                  Cantidad de personas con la misma edad
+                  Resultados Encontrados
                 </label>
                 <label class="card-checkbox-label">
                   <input
                     type="checkbox"
                     class="card-checkbox"
-                    value="meta2"
+                    value="meta8"
                     checked
                   />
-                  Promedio de edad
-                </label>
-                <label class="card-checkbox-label">
-                  <input
-                    type="checkbox"
-                    class="card-checkbox"
-                    value="meta3"
-                    checked
-                  />
-                  Personas con la misma edad
-                </label>
-                <label class="card-checkbox-label">
-                  <input
-                    type="checkbox"
-                    class="card-checkbox"
-                    value="meta4"
-                    checked
-                  />
-                  Porcentaje en la lista
-                </label>
-                <label class="card-checkbox-label">
-                  <input
-                    type="checkbox"
-                    class="card-checkbox"
-                    value="meta5"
-                    checked
-                  />
-                  Personas con el mismo salario
-                </label>
-                <label class="card-checkbox-label">
-                  <input
-                    type="checkbox"
-                    class="card-checkbox"
-                    value="meta6"
-                    checked
-                  />
-                  Promedio de salario
+                  Detección de Duplicados
                 </label>
               </div>
             </div>
@@ -245,6 +192,50 @@
     <footer>
       <p>&copy; 2026 Santy Analytics - Dashboard Premium</p>
     </footer>
+
+    <!-- Modal para Nuevo Registro -->
+    <div id="modalRegistro" class="modal-wrapper form-hidden">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <form id="registroForm" class="card-form">
+          <div class="form-header">
+            <h3><i data-lucide="user-plus"></i> Nuevo Registro</h3>
+            <button type="button" class="btn-close-modal" id="btnCerrarX">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <div class="form-body">
+            <div class="form-group">
+              <label for="nombre">Nombre Completo</label>
+              <div class="input-wrapper">
+                <i data-lucide="user"></i>
+                <input
+                  type="text"
+                  id="nombre"
+                  placeholder="Ej: Santiago Moralez"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="edad">Edad</label>
+              <div class="input-wrapper">
+                <i data-lucide="calendar"></i>
+                <input type="number" id="edad" placeholder="0" required />
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="btnCancelar" class="btn-cancel">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-save">
+              <i data-lucide="save"></i> Guardar Cliente
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script src="js/inicio.js"></script>
     <script>
