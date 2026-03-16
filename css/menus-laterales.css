@@ -1,0 +1,166 @@
+/* --- Right Sidebar (Filters) --- */
+.filters-sidebar {
+  width: 380px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  background: white;
+  border-left: 1px solid var(--border-color);
+  z-index: 1002;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  transform: translateX(100%);
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+.filters-sidebar.active {
+  transform: translateX(0);
+}
+
+/* --- Left Sidebar (Main Nav) --- */
+aside#sidebar-left {
+  width: 260px;
+  background: linear-gradient(180deg, var(--sidebar) 0%, #1a1f35 100%);
+  color: white;
+  padding: 1.5rem 0;
+  position: fixed;
+  top: 0;
+  left: -260px;
+  height: 100vh;
+  z-index: 1002;
+  transition: var(--transition);
+  box-shadow: 10px 0 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+aside#sidebar-left.active {
+  transform: translateX(260px);
+}
+
+/* Sidebar mini state */
+body.sidebar-mini aside#sidebar-left {
+  width: 80px;
+}
+
+body.sidebar-mini aside#sidebar-left:hover {
+  width: 260px;
+}
+
+aside#sidebar-left ul {
+  list-style: none;
+  margin-top: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 0.85rem;
+}
+
+aside#sidebar-left ul li a {
+  color: #94a3b8;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  padding: 0.9rem 1.15rem;
+  border-radius: 14px;
+  transition: var(--transition);
+  font-weight: 600;
+  font-size: 0.92rem;
+  position: relative;
+  overflow: hidden;
+}
+
+aside#sidebar-left ul li a i {
+  width: 20px;
+  height: 20px;
+  transition: var(--transition-fast);
+  color: #64748b;
+}
+
+aside#sidebar-left ul li a:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  transform: translateX(4px);
+}
+
+aside#sidebar-left ul li a:hover i {
+  color: white;
+}
+
+aside#sidebar-left ul li a.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  box-shadow: 0 10px 25px -5px hsla(230, 85%, 60%, 0.4);
+}
+
+aside#sidebar-left ul li a.active i {
+  color: white;
+}
+
+/* Sidebar Mini logic */
+body.sidebar-mini aside#sidebar-left:not(:hover) ul li a {
+  justify-content: center;
+  padding: 0.9rem 0;
+}
+
+body.sidebar-mini aside#sidebar-left:not(:hover) span {
+  display: none;
+}
+
+/* --- Filter Groups & Cards --- */
+.sidebar-header {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  background: #ffffff;
+}
+
+.sidebar-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.filter-card {
+  background: #f8fafc;
+  padding: 1.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 1.25rem;
+  transition: var(--transition);
+}
+
+.filter-card:hover {
+  background: white;
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.filters-group h4 {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+/* Scrollbar refinement */
+.filters-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.filters-content::-webkit-scrollbar { width: 4px; }
+.filters-content::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}

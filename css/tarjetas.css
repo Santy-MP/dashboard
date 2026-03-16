@@ -1,0 +1,117 @@
+/* --- Grid for Stats --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+/* --- Stat Card --- */
+.stat-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: var(--transition);
+  border: 1px solid var(--glass-border);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-premium);
+  border-color: var(--primary-light);
+}
+
+/* --- Icon Container --- */
+.card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  color: white;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.stat-card:hover .card-icon {
+  transform: scale(1.15) rotate(5deg);
+}
+
+/* Updated Gradients for 8 cards */
+.stat-card[data-id="meta1"] .card-icon { background: linear-gradient(135deg, #4f46e5, #7c3aed); box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4); }
+.stat-card[data-id="meta2"] .card-icon { background: linear-gradient(135deg, #0ea5e9, #2563eb); box-shadow: 0 10px 20px -5px rgba(14, 165, 233, 0.4); }
+.stat-card[data-id="meta3"] .card-icon { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4); }
+.stat-card[data-id="meta4"] .card-icon { background: linear-gradient(135deg, #f43f5e, #be123c); box-shadow: 0 10px 20px -5px rgba(244, 63, 94, 0.4); }
+.stat-card[data-id="meta5"] .card-icon { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4); }
+.stat-card[data-id="meta6"] .card-icon { background: linear-gradient(135deg, #8b5cf6, #6d28d9); box-shadow: 0 10px 20px -5px rgba(139, 92, 246, 0.4); }
+.stat-card[data-id="meta7"] .card-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4); }
+.stat-card[data-id="meta8"] .card-icon { background: linear-gradient(135deg, #ec4899, #db2777); box-shadow: 0 10px 20px -5px rgba(236, 72, 153, 0.4); }
+
+/* --- Content --- */
+.card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-content h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.02em;
+  text-transform: none; /* SaaS style usually avoids all-caps in cards */
+}
+
+.card-content span {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* --- Visibility & Utility --- */
+.hidden-card {
+  display: none !important;
+}
+
+#customCardSelector {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  margin-top: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.card-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-main);
+  transition: var(--transition-fast);
+}
+
+.card-checkbox-label:hover {
+  color: var(--primary);
+}
+
+.card-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}

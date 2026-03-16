@@ -19,8 +19,28 @@
         <h1>Santy<span>Dashboard</span></h1>
       </div>
       <div class="user-info">
-        <i data-lucide="bell"></i>
-        <i data-lucide="user"></i>
+        <div class="header-actions">
+          <button
+            id="right-menu-toggle"
+            class="btn-icon"
+            aria-label="Abrir filtros"
+          >
+            <i data-lucide="filter"></i>
+          </button>
+          <button class="btn-icon" aria-label="Notificaciones">
+            <i data-lucide="bell"></i>
+            <div class="notification-badge"></div>
+          </button>
+        </div>
+
+        <div class="user-profile-badge" id="logout-trigger">
+          <div class="avatar-circle" id="user-avatar">U</div>
+          <div class="user-name-role">
+            <span class="name" id="header-user-name">Usuario</span>
+            <span class="role" id="header-user-role">Role</span>
+          </div>
+          <i data-lucide="chevron-down" style="width: 14px; opacity: 0.5"></i>
+        </div>
       </div>
     </header>
     <div id="overlay"></div>
@@ -30,33 +50,28 @@
           <ul>
             <li>
               <a href="inicio.html"
-                ><i data-lucide="layout-dashboard"></i> <span>Inicio</span></a
+                ><i data-lucide="layout-dashboard"></i> <span>Inicio</span></a>
+            </li>
+            <li>
+              <a href="#"
+                ><i data-lucide="shopping-bag"></i> <span>Productos</span></a>
+            </li>
+            <li>
+              <a href="#"
+                ><i data-lucide="shopping-cart"></i> <span>Pedidos</span></a>
+            </li>
+            <li>
+              <a href="Usuarios.html">
+                <i data-lucide="users"></i> <span>Usuarios</span></a>
+            </li>
+            <li>
+              <a href="reportes.html"
+                ><i data-lucide="bar-chart-3"></i> <span>Reportes</span></a
               >
             </li>
             <li>
               <a href="#"
-                ><i data-lucide="shopping-bag"></i> <span>Productos</span></a
-              >
-            </li>
-            <li>
-              <a href="#"
-                ><i data-lucide="shopping-cart"></i> <span>Pedidos</span></a
-              >
-            </li>
-            <li>
-              <a href="Clientes.html">
-                <i data-lucide="users"></i> <span>Clientes</span></a
-              >
-            </li>
-            <li>
-              <a href="reportes.html">
-                <i data-lucide="bar-chart-3"></i> <span>Reportes</span></a
-              >
-            </li>
-            <li>
-              <a href="#"
-                ><i data-lucide="settings"></i> <span>Ajustes</span></a
-              >
+                ><i data-lucide="settings"></i> <span>Ajustes</span></a>
             </li>
           </ul>
         </nav>
@@ -70,28 +85,119 @@
           </div>
         </div>
 
-        <!-- Section: Charts -->
+        <section class="dashboard-content-area">
+          <!-- Section: Metrics -->
+          <div class="section-container">
+            <div class="section-header">
+              <h3><i data-lucide="pie-chart"></i> Métricas Clave</h3>
+            </div>
+            <section class="container" id="stats-container">
+              <article class="stat-card" data-id="meta1">
+                <div class="card-icon"><i data-lucide="users"></i></div>
+                <div class="card-content">
+                  <h3>Total Personas</h3>
+                  <span>0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta2">
+                <div class="card-icon"><i data-lucide="activity"></i></div>
+                <div class="card-content">
+                  <h3>Promedio Edad</h3>
+                  <span>0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta3">
+                <div class="card-icon"><i data-lucide="user-check"></i></div>
+                <div class="card-content">
+                  <h3>Activos</h3>
+                  <span>0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta4">
+                <div class="card-icon"><i data-lucide="user-x"></i></div>
+                <div class="card-content">
+                  <h3>Inactivos</h3>
+                  <span>0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta5">
+                <div class="card-icon"><i data-lucide="wallet"></i></div>
+                <div class="card-content">
+                  <h3>Promedio Salarial</h3>
+                  <span>$ 0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta6">
+                <div class="card-icon"><i data-lucide="trending-up"></i></div>
+                <div class="card-content">
+                  <h3>Salario Máximo</h3>
+                  <span>$ 0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta7">
+                <div class="card-icon"><i data-lucide="user"></i></div>
+                <div class="card-content">
+                  <h3>Hombres</h3>
+                  <span>0</span>
+                </div>
+              </article>
+              <article class="stat-card" data-id="meta8">
+                <div class="card-icon"><i data-lucide="user"></i></div>
+                <div class="card-content">
+                  <h3>Mujeres</h3>
+                  <span>0</span>
+                </div>
+              </article>
+            </section>
+          </div>
+
+          <!-- Section: Charts -->
         <div class="section-container">
           <div class="section-header">
             <h3><i data-lucide="bar-chart-2"></i> Análisis de Rendimiento</h3>
           </div>
           <section class="charts-grid">
+            <!-- Chart 1: Profiles (Radar) -->
             <div class="chart-card">
               <div class="chart-header">
-                <h4>Proyección de Ventas</h4>
-                <span class="badge badge-indigo">Mensual</span>
+                <h4>Perfiles de Usuario</h4>
+                <span class="badge badge-indigo">Radar</span>
               </div>
               <div class="chart-container">
-                <canvas id="performanceChart"></canvas>
+                <canvas id="chartRadar"></canvas>
               </div>
             </div>
+
+            <!-- Chart 2: Status (Polar) -->
             <div class="chart-card">
               <div class="chart-header">
-                <h4>Reporte de Ingresos</h4>
-                <span class="badge badge-rose">Semanal</span>
+                <h4>Distribución de Estados</h4>
+                <span class="badge badge-rose">Polar</span>
               </div>
               <div class="chart-container">
-                <canvas id="performanceChart_1"></canvas>
+                <canvas id="chartPolar"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 3: Top Salarios (Horizontal Bar) -->
+            <div class="chart-card">
+              <div class="chart-header">
+                <h4>Top Salarios</h4>
+                <span class="badge badge-amber">Ranking</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chartSalarios"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 4: Roles (Doughnut) -->
+            <div class="chart-card">
+              <div class="chart-header">
+                <h4>Proporción de Roles</h4>
+                <span class="badge badge-purple">Roles</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="chartRoles"></canvas>
               </div>
             </div>
           </section>
@@ -99,35 +205,62 @@
       </main>
 
       <!-- Full-Height Right Sidebar -->
-      <aside class="filters-sidebar">
-        <div class="filters-sticky-wrapper">
-          <div class="filters-group">
-            <h3>Filtros de Análisis</h3>
-            <div class="filter">
-              <label>Estado:</label>
-              <select id="statusFilter">
-                <option value="Todos">Todos</option>
-                <option value="Activos">Activos</option>
-                <option value="Inactivos">Inactivos</option>
-              </select>
-            </div>
-            <div class="filter">
-              <label>Ingresos:</label>
-              <select id="statusFilter_1">
-                <option value="Todos">Todos</option>
-                <option value="Activos_1">Activos</option>
-                <option value="Inactivos_1">Inactivos</option>
-              </select>
-            </div>
-            <div class="filter">
-              <label>Periodo:</label>
-              <select id="periodFilter">
-                <option value="Julio">Julio 2026</option>
-                <option value="Junio">Junio 2026</option>
-              </select>
-            </div>
+      <aside id="sidebar-right" class="filters-sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-header-left">
+            <i data-lucide="filter"></i>
+            <h3>Filtros</h3>
+          </div>
+          <button
+            id="close-sidebar-right"
+            class="btn-close-sidebar"
+            aria-label="Cerrar"
+          >
+            <i data-lucide="x"></i>
+          </button>
+        </div>
 
-            <button class="btn-filter">Actualizar Panel</button>
+        <div class="filters-content">
+          <div class="filter-card">
+            <div class="filters-group">
+              <h4>Estados</h4>
+              <div class="form-group">
+                <label>Estado:</label>
+                <select id="statusFilter">
+                  <option value="Todos">Todos</option>
+                  <option value="Activos">Activos</option>
+                  <option value="Inactivos">Inactivos</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Ingresos:</label>
+                <select id="statusFilter_1">
+                  <option value="Todos">Todos</option>
+                  <option value="Activos_1">Activos</option>
+                  <option value="Inactivos_1">Inactivos</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-card">
+            <div class="filters-group">
+              <h4>Periodo</h4>
+              <div class="form-group">
+                <label>Periodo:</label>
+                <select id="periodFilter">
+                  <option value="Julio">Julio 2026</option>
+                  <option value="Junio">Junio 2026</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-card">
+            <div class="filters-group">
+              <h4>Acciones</h4>
+              <button class="btn-filter">Actualizar Panel</button>
+            </div>
           </div>
         </div>
       </aside>
@@ -136,10 +269,64 @@
       <p>&copy; 2026 Santy Analytics - Dashboard Premium</p>
     </footer>
 
-    <script src="js/inicio.js"></script>
-    <script>
+    <script type="module" src="js/app.js"></script>
+    <script type="module">
+      import { getCookie, deleteCookie } from "./js/storageUtils.js";
+
       // Initialize Lucide icons
       lucide.createIcons();
+
+      // Access Control & Role-based visibility
+      document.addEventListener("DOMContentLoaded", () => {
+        const role = getCookie("userRole");
+        const isLoggedIn = getCookie("isLoggedIn");
+
+        if (
+          isLoggedIn !== "true" ||
+          (role !== "administrador" && role !== "superadmin")
+        ) {
+          window.location.href = "Login.html";
+          return;
+        }
+
+        // Populate header info
+        const nameElement = document.getElementById("header-user-name");
+        const roleElement = document.getElementById("header-user-role");
+        const avatarElement = document.getElementById("user-avatar");
+
+        if (nameElement) {
+          if (role === "superadmin") nameElement.innerText = "Super Admin";
+          else if (role === "administrador")
+            nameElement.innerText = "Administrador";
+          else nameElement.innerText = "Cliente";
+        }
+        if (roleElement) roleElement.innerText = role;
+        if (avatarElement) {
+          if (role === "superadmin") avatarElement.innerText = "SA";
+          else
+            avatarElement.innerText = role ? role.charAt(0).toUpperCase() : "U";
+        }
+
+        const sidebarNav = document.querySelector("#sidebar-left nav ul");
+        const menuItems = sidebarNav.querySelectorAll("li");
+
+        // Reset visibility (let CSS handle defaults)
+        menuItems.forEach((li) => li.classList.remove("role-hidden"));
+
+        // Since only superadmin/administrador can access this page,
+        // they both see all menu items by default.
+      });
+
+      // Logout functionality
+      document.addEventListener("click", (e) => {
+        if (e.target.closest("#logout-trigger")) {
+          if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+            deleteCookie("isLoggedIn");
+            deleteCookie("userRole");
+            window.location.href = "Login.html";
+          }
+        }
+      });
     </script>
   </body>
 </html>
