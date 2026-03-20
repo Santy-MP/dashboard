@@ -48,9 +48,9 @@ export function initSidebar() {
 
   if (!btnToggle || !sidebar || !overlay) return;
 
-  // Restaurar estado mini si existe
+  // Restaurar estado mini si existe (solo en escritorio)
   const isMini = getStorage("sidebar_mini");
-  if (isMini !== null) {
+  if (isMini !== null && window.innerWidth > 1024) {
     if (isMini) {
       body.classList.add("sidebar-mini");
     } else {

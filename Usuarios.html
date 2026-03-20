@@ -50,7 +50,7 @@
         // Reset visibility (let CSS handle defaults)
         menuItems.forEach(li => li.classList.remove('role-hidden'));
 
-        // Since only superadmin/administrador can access this page, 
+        // Since only superadmin/administrador can access this page,
         // they both see all menu items by default.
       });
 
@@ -149,48 +149,6 @@
               <h3><i data-lucide="pie-chart"></i> Métricas Clave</h3>
             </div>
             <section class="container" id="stats-container">
-              <article class="stat-card" data-id="meta1">
-                <div class="card-icon"><i data-lucide="users"></i></div>
-                <div class="card-content">
-                  <h3>Total Personas</h3>
-                  <span>0</span>
-                </div>
-              </article>
-              <article class="stat-card" data-id="meta2">
-                <div class="card-icon"><i data-lucide="activity"></i></div>
-                <div class="card-content">
-                  <h3>Promedio Edad</h3>
-                  <span>0</span>
-                </div>
-              </article>
-              <article class="stat-card" data-id="meta3">
-                <div class="card-icon"><i data-lucide="user-check"></i></div>
-                <div class="card-content">
-                  <h3>Activos</h3>
-                  <span>0</span>
-                </div>
-              </article>
-              <article class="stat-card" data-id="meta4">
-                <div class="card-icon"><i data-lucide="user-x"></i></div>
-                <div class="card-content">
-                  <h3>Inactivos</h3>
-                  <span>0</span>
-                </div>
-              </article>
-              <article class="stat-card" data-id="meta5">
-                <div class="card-icon"><i data-lucide="wallet"></i></div>
-                <div class="card-content">
-                  <h3>Promedio Salarial</h3>
-                  <span>$ 0</span>
-                </div>
-              </article>
-              <article class="stat-card" data-id="meta6">
-                <div class="card-icon"><i data-lucide="trending-up"></i></div>
-                <div class="card-content">
-                  <h3>Salario Máximo</h3>
-                  <span>$ 0</span>
-                </div>
-              </article>
               <article class="stat-card" data-id="meta7">
                 <div class="card-icon"><i data-lucide="user"></i></div>
                 <div class="card-content">
@@ -209,7 +167,7 @@
           </div>
 
           <!-- Section: Table -->
-          <div class="section-container">
+           <div class="section-container">
             <div class="section-header">
               <h3><i data-lucide="table"></i> Detalle de Registros</h3>
             </div>
@@ -237,12 +195,15 @@
                 <button id="prevBtn">
                   <i data-lucide="chevron-left"></i> Anterior
                 </button>
+                <div class="form-group">
+                <label for="cantidadFilas">Cantidad de filas</label>
+                <input type="number" id="cantidadFilas" placeholder="Ej: 10"/>
+              </div>
                 <span id="infoPagina"></span>
                 <button id="nextBtn">
                   Siguiente <i data-lucide="chevron-right"></i>
                 </button>
               </div>
-            </div>
             </div>
           </div>
         </section>
@@ -299,10 +260,6 @@
                     <option value="Activo">Activos</option>
                     <option value="Inactivo">Inactivos</option>
                 </select>
-              </div>
-              <div class="form-group">
-                <label for="cantidadFilas">Cantidad de filas</label>
-                <input type="number" id="cantidadFilas" placeholder="Ej: 10"/>
               </div>
             </div>
           </div>

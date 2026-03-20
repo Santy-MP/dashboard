@@ -55,7 +55,7 @@ export function initFormLogic() {
 
     // Refrescar componentes globales
     // Actualizamos los datos actuales en tablas.js (que dispara renderTable)
-    setCurrentData([...matriz]); 
+    setCurrentData([...matriz]);
     updateStatusMetrics([...matriz]);
     initCharts([...matriz]);
 

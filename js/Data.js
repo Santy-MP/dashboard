@@ -25,8 +25,8 @@ const DEFAULT_MATRIZ = [
   [22,"Karla","Pineda",30,2600000,"1994-04-01","2025-02-10","Femenino","Activo","Cliente",],
   [23,"Hector","Suarez",39,4200000,"1985-07-14","2025-02-21","Masculino","Inactivo","Cliente",],
   [24,"Monica","Campos",33,3100000,"1991-08-23","2025-03-05","Femenino","Activo","Cliente",],
-  [25,"Luis","Reyes",45,5000000,"1979-09-10","2025-03-15","Masculino","Activo","Cliente",],
-  [26,"Diana","Vega",22,1400000,"2002-12-02","2025-03-25","Femenino","Activo","Cliente",],
+  [25,"Luis","Reyes",45,5000000,"1979-09-10","2026-03-15","Masculino","Activo","Cliente",],
+  [26,"Diana","Vega",22,1400000,"2004-12-02","2026-03-20","Femenino","Activo","Cliente",],
 
   // NUEVOS CLIENTES
   [27,"Jorge","Castro",34,2300000,"1990-06-12","2025-04-02","Masculino","Activo","Cliente",],

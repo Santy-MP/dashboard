@@ -6,38 +6,38 @@ import { initMetrics } from "./tarjetas.js";
 import { initFormLogic } from "./btn-CrearUsuario.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.group("🚀 Santy Analytics Dashboard: Inicializando...");
+  console.group("Santy Analytics Dashboard: Inicializando...");
 
   try {
     initSidebar();
-    console.log("✅ Sidebar: Listo");
+    console.log("Sidebar: Listo");
 
     initSidebarRight();
-    console.log("✅ Sidebar Derecho: Listo");
+    console.log("Sidebar Derecho: Listo");
 
     initCharts();
-    console.log("✅ Gráficas: Renderizadas");
+    console.log("Gráficas: Renderizadas");
 
     initTableAndSearch();
-    console.log("✅ Tabla y Paginación: Operativas");
+    console.log("Tabla y Paginación: Operativas");
 
     initFilters();
-    console.log("✅ Sistema de Filtros: Activo");
+    console.log("Sistema de Filtros: Activo");
 
     initMetrics();
-    console.log("✅ Tarjetas de Métricas: Calculadas");
+    console.log("Tarjetas de Métricas: Calculadas");
 
     initFormLogic();
-    console.log("✅ Formulario de Registro: Vinculado");
+    console.log("Formulario de Registro: Vinculado");
 
     console.groupEnd();
     console.log(
-      "%c✨ ¡Todo funciona correctamente!",
+      "Todo funciona correctamente!",
       "color: #6366f1; font-weight: bold; font-size: 1.2rem;",
     );
   } catch (error) {
     console.groupEnd();
-    console.error("❌ Error durante la inicialización:", error);
+    console.error("Error durante la inicialización:", error);
   }
 });
 

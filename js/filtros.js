@@ -1,4 +1,3 @@
-import { matriz } from "./Data.js";
 import {
   renderTable,
   setCurrentData,
@@ -17,9 +16,16 @@ export function initFilters() {
   const buscador = document.getElementById("buscar");
   const listaResultados = document.getElementById("listaResultados");
 
+  const formatDate = (date) => {
+    if (!date) return null;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   let selectedRange = getStorage("filter_range") || { start: null, end: null };
 
-  // Inicializar Flatpickr
   if (rangeInput) {
     const fp = flatpickr(rangeInput, {
       mode: "range",
@@ -27,13 +33,16 @@ export function initFilters() {
       altInput: true,
       altFormat: "F j, Y",
       theme: "dark",
-      defaultDate: selectedRange.start && selectedRange.end ? [selectedRange.start, selectedRange.end] : null,
+      defaultDate:
+        selectedRange.start && selectedRange.end
+          ? [selectedRange.start, selectedRange.end]
+          : null,
       onChange: function (selectedDates) {
         if (selectedDates.length === 2) {
-          selectedRange.start = selectedDates[0].toISOString().split("T")[0];
-          selectedRange.end = selectedDates[1].toISOString().split("T")[0];
+          selectedRange.start = formatDate(selectedDates[0]);
+          selectedRange.end = formatDate(selectedDates[1]);
         } else if (selectedDates.length === 1) {
-          selectedRange.start = selectedDates[0].toISOString().split("T")[0];
+          selectedRange.start = formatDate(selectedDates[0]);
           selectedRange.end = null;
         } else {
           selectedRange.start = null;
@@ -46,29 +55,41 @@ export function initFilters() {
   }
 
   // Logic for Personalizar Métricas (from btn_Actualizar_panel.js)
+  const pageSuffix = window.location.pathname.split("/").pop() || "inicio.html";
+  const cardModeKey = `card_view_mode_${pageSuffix}`;
+  const selectedCardKey = `selected_cards_${pageSuffix}`;
+
   const cardViewMode = document.getElementById("cardViewMode");
   const customSelector = document.getElementById("customCardSelector");
   const checkboxes = document.querySelectorAll(".card-checkbox");
 
   const updateCardVisibility = () => {
+    if (!cardViewMode && checkboxes.length === 0) return;
+
     const isCustom = cardViewMode && cardViewMode.value === "custom";
     if (customSelector)
       customSelector.style.display = isCustom ? "block" : "none";
 
+    const selectedCards = [];
+    checkboxes.forEach((cb) => {
+      if (cb.checked) selectedCards.push(cb.value);
+    });
+
     document.querySelectorAll(".stat-card").forEach((card) => {
       const cardId = card.getAttribute("data-id");
       if (isCustom) {
-        const checkbox = Array.from(checkboxes).find(
-          (cb) => cb.value === cardId,
-        );
-        card.classList.toggle(
-          "hidden-card",
-          checkbox ? !checkbox.checked : false,
-        );
+        const isSelected = selectedCards.includes(cardId);
+        card.classList.toggle("hidden-card", !isSelected);
       } else {
         card.classList.remove("hidden-card");
       }
     });
+
+    // Persist to localStorage ONLY if we have checkboxes to save
+    if (cardViewMode) setStorage(cardModeKey, cardViewMode.value);
+    if (checkboxes.length > 0) {
+      setStorage(selectedCardKey, selectedCards);
+    }
   };
 
   cardViewMode?.addEventListener("change", updateCardVisibility);
@@ -87,17 +108,17 @@ export function initFilters() {
       const firstName = f[1].toLowerCase();
       const lastName = f[2].toLowerCase();
       const fullName = `${firstName} ${lastName}`;
-      
+      const recordDate = f[6] || "";
+
       const matchSearch =
         query === "" ||
         firstName.includes(query) ||
         lastName.includes(query) ||
-        fullName.includes(query);
+        fullName.includes(query) ||
+        recordDate.includes(query);
 
-      // Usamos el índice 6 para fecha de incorporación según Data.js
-      const recordDate = f[6]; // Format: "YYYY-MM-DD"
-      
-      const matchDesde = !selectedRange.start || recordDate >= selectedRange.start;
+      const matchDesde =
+        !selectedRange.start || recordDate >= selectedRange.start;
       const matchHasta = !selectedRange.end || recordDate <= selectedRange.end;
       const matchFecha = matchDesde && matchHasta;
 
@@ -107,10 +128,6 @@ export function initFilters() {
     });
 
     // 2. Comprobamos si hay duplicados antes de limpiar (basado en Nombre + Apellido)
-    const rawNames = filteredResults.map(f => `${f[1].toLowerCase()} ${f[2].toLowerCase()}`);
-    const hasSuppressedDuplicates = new Set(rawNames).size !== filteredResults.length;
-
-    // 3. Eliminamos duplicados por Nombre + Apellido para la tabla
     const uniqueResults = [];
     const seenNames = new Set();
 
@@ -124,13 +141,12 @@ export function initFilters() {
 
     const duplicateCount = filteredResults.length - uniqueResults.length;
 
-    // 4. Actualizamos el estado en tablas.js
-    // Esto asegura que la tabla use los datos filtrados y regrese a la pág 1
+    // 3. Actualizamos el estado en tablas.js
     setCurrentData(uniqueResults);
     updateStatusMetrics(uniqueResults, duplicateCount);
     initCharts(uniqueResults);
 
-    // 5. Lógica de la lista de sugerencias (Autocomplete)
+    // 4. Lógica de la lista de sugerencias (Autocomplete)
     if (listaResultados) {
       listaResultados.innerHTML = "";
       if (query !== "" && uniqueResults.length > 0) {
@@ -141,7 +157,7 @@ export function initFilters() {
           li.addEventListener("click", () => {
             buscador.value = `${match[1]} ${match[2]}`;
             listaResultados.classList.remove("active");
-            applyFilters(); // Re-aplicar filtros con el nombre seleccionado
+            applyFilters();
           });
           listaResultados.appendChild(li);
         });
@@ -169,6 +185,28 @@ export function initFilters() {
     }
   }
 
+  // Restore Card Selection
+  const savedCardMode = getStorage(cardModeKey);
+  const savedSelectedCards = getStorage(selectedCardKey);
+
+  if (cardViewMode && savedCardMode) {
+    cardViewMode.value = savedCardMode;
+  }
+
+  if (savedSelectedCards && Array.isArray(savedSelectedCards)) {
+    checkboxes.forEach((cb) => {
+      cb.checked = savedSelectedCards.includes(cb.value);
+    });
+  } else {
+    // Default: If no saved cards, ensure all are checked if it's the first time
+    checkboxes.forEach((cb) => {
+      cb.checked = true;
+    });
+  }
+
+  // Initial Visibility Sync
+  updateCardVisibility();
+
   // Initial Apply
   applyFilters();
 
@@ -179,7 +217,7 @@ export function initFilters() {
       debouncedSearch();
     });
   }
-  
+
   if (estadoFiltro) {
     estadoFiltro.addEventListener("change", (e) => {
       setStorage("filter_status", e.target.value);

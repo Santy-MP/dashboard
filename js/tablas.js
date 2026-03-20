@@ -13,7 +13,13 @@ export function setCurrentData(newData) {
 }
 
 export function setFilasPorPagina(val) {
-  filasPorPagina = val;
+  const parsed = parseInt(val, 10);
+  if (!isNaN(parsed) && parsed > 0) {
+    filasPorPagina = parsed;
+    console.log("setFilasPorPagina: Set to", filasPorPagina);
+  } else {
+    console.warn("setFilasPorPagina: Invalid value", val, "- keeping", filasPorPagina);
+  }
 }
 
 export function getBaseData() {
@@ -43,17 +49,28 @@ export const renderTable = () => {
   const fin = inicio + filasPorPagina;
 
   const datosPaginados = currentData.slice(inicio, fin);
+  console.log("renderTable: Rendering", datosPaginados.length, "rows from", currentData.length, "total.");
   const totalPaginas = Math.ceil(currentData.length / filasPorPagina);
 
   datosPaginados.forEach((fila) => {
     const tr = document.createElement("tr");
     fila.forEach((celda, index) => {
       const td = document.createElement("td");
-      // Formato de moneda para la columna de salario (índice 4)
-      td.textContent =
-        index === 4 && typeof celda === "number"
-          ? `$${celda.toLocaleString()}`
-          : celda;
+
+      if (index === 4 && typeof celda === "number") {
+        // Formato de moneda para la columna de salario (índice 4)
+        td.textContent = `$${celda.toLocaleString()}`;
+      } else if (index === 8) {
+        // Badge para Estado (índice 8)
+        const badgeClass = celda.toLowerCase() === "activo" ? "badge-active" : "badge-inactive";
+        td.innerHTML = `<span class="badge ${badgeClass}">${celda}</span>`;
+      } else if (index === 9) {
+        // Badge para Rol (índice 9)
+        td.innerHTML = `<span class="badge badge-role">${celda}</span>`;
+      } else {
+        td.textContent = celda;
+      }
+
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
@@ -109,4 +126,5 @@ export function initTableAndSearch() {
 
   renderTable();
   updateStatusMetrics(currentData);
+  console.log("initTableAndSearch: Initial render with", currentData.length, "items.");
 }

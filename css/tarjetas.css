@@ -1,26 +1,27 @@
 /* --- Grid for Stats --- */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-6);
-  margin-bottom: var(--space-8);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* More columns if space allowed */
+  gap: var(--space-4); /* Reduced gap */
+  margin-bottom: var(--space-6);
 }
 
 /* --- Stat Card --- */
 .stat-card {
   background: var(--card-bg);
-  backdrop-filter: blur(10px) saturate(180%);
-  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(190%);
+  -webkit-backdrop-filter: blur(12px) saturate(190%);
   border-radius: var(--radius);
-  padding: 1.75rem;
+  padding: 1.25rem 1.5rem; /* More balanced padding */
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
   transition: var(--transition);
   border: 1px solid var(--glass-border);
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-md);
+  height: 100%; /* Ensure uniform height in grid */
 }
 
 .stat-card:hover {
@@ -31,13 +32,13 @@
 
 /* --- Icon Container --- */
 .card-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   color: white;
   flex-shrink: 0;
   transition: var(--transition);
@@ -64,20 +65,20 @@
 }
 
 .card-content h3 {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: 0.25rem;
-  letter-spacing: 0.02em;
-  text-transform: none; /* SaaS style usually avoids all-caps in cards */
+  margin-bottom: 0.15rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
 }
 
 .card-content span {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: var(--text-main);
-  letter-spacing: -0.04em;
-  line-height: 1;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 /* --- Visibility & Utility --- */
@@ -86,12 +87,12 @@
 }
 
 #customCardSelector {
-  background: white;
-  padding: 1.5rem;
-  border-radius: var(--radius);
+  background: rgba(248, 250, 252, 0.8);
+  padding: 1.25rem;
+  border-radius: 16px;
   border: 1px solid var(--border-color);
   margin-top: 1rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .card-checkbox-label {

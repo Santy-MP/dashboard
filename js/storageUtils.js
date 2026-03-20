@@ -1,9 +1,3 @@
-/**
- * Utility functions for localStorage and Cookies
- */
-
-// --- localStorage Helpers ---
-
 export function setStorage(key, val) {
   try {
     localStorage.setItem(key, JSON.stringify(val));
@@ -41,6 +35,7 @@ export function getCookie(name) {
   }
   return null;
 }
+
 export function deleteCookie(name) {
   setCookie(name, "", -1);
 }
